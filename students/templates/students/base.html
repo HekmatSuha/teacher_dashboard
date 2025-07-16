@@ -1,9 +1,10 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Teacher's Dashboard{% endblock %}</title>
+    <title>{% block title %}{% trans "Teacher's Dashboard" %}{% endblock %}</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -20,9 +21,9 @@
 
             {# --- DYNAMIC BRAND LINK --- #}
             {% if user.is_superuser %}
-                <a class="navbar-brand" href="{% url 'dashboard' %}">Teacher Dashboard</a>
+                <a class="navbar-brand" href="{% url 'dashboard' %}">{% trans "Teacher Dashboard" %}</a>
             {% else %}
-                <a class="navbar-brand" href="{% url 'student-dashboard' %}">Student Portal</a>
+                <a class="navbar-brand" href="{% url 'student-dashboard' %}">{% trans "Student Portal" %}</a>
             {% endif %}
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -35,33 +36,33 @@
                     {% if user.is_superuser %}
                         {# Teacher Links #}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student-list' %}">Students</a>
+                            <a class="nav-link" href="{% url 'student-list' %}">{% trans "Students" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'group-list' %}">Groups</a>
+                            <a class="nav-link" href="{% url 'group-list' %}">{% trans "Groups" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'assignment-list' %}">Assignments</a>
+                            <a class="nav-link" href="{% url 'assignment-list' %}">{% trans "Assignments" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'announcement-list' %}">Announcements</a>
+                            <a class="nav-link" href="{% url 'announcement-list' %}">{% trans "Announcements" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'attendance' %}">Attendance</a>
+                            <a class="nav-link" href="{% url 'attendance' %}">{% trans "Attendance" %}</a>
                         </li>
                     {% else %}
                         {# Student Links #}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student-dashboard' %}">Dashboard</a>
+                            <a class="nav-link" href="{% url 'student-dashboard' %}">{% trans "Dashboard" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student-assignments' %}">My Assignments</a>
+                            <a class="nav-link" href="{% url 'student-assignments' %}">{% trans "My Assignments" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student-attendance' %}">My Attendance</a>
+                            <a class="nav-link" href="{% url 'student-attendance' %}">{% trans "My Attendance" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student-profile' %}">My Profile</a>
+                            <a class="nav-link" href="{% url 'student-profile' %}">{% trans "My Profile" %}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -74,7 +75,7 @@
                 {% if user.is_superuser %}
                     {# Teacher View #}
                     <span class="navbar-text me-3">
-                        Welcome, {{ user.username }}
+                        {% trans "Welcome" %}, {{ user.username }}
                     </span>
                 {% else %}
                     {# Student view with profile picture #}
@@ -82,13 +83,25 @@
                         {% if student_photo_url %}
                             <img src="{{ student_photo_url }}" class="rounded-circle me-2" alt="{{ user.username }}" width="30" height="30" style="object-fit: cover;">
                         {% endif %}
-                        Welcome, {{ user.username }}
+                        {% trans "Welcome" %}, {{ user.username }}
                     </span>
                 {% endif %}
 
+                <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center me-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}"/>
+                    <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>{{ lang.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
                 <form action="{% url 'logout' %}" method="post" class="d-flex">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-light">Logout</button>
+                    <button type="submit" class="btn btn-outline-light">{% trans "Logout" %}</button>
                 </form>
 
             </div>
