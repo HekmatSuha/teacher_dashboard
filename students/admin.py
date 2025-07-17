@@ -1,7 +1,8 @@
 # students/admin.py
 
 from django.contrib import admin
-from .models import Student, Group, Assignment, Grade, Attendance
+from .models import Student, Group, Assignment, Grade, Attendance, Announcement
+
 
 # Simple registration
 admin.site.register(Student)
@@ -9,3 +10,4 @@ admin.site.register(Group)
 admin.site.register(Assignment)
 admin.site.register(Grade)
 admin.site.register(Attendance)
+admin.site.register(Announcement)

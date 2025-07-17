@@ -55,12 +55,12 @@
               {% if student.photo %}
     <img src="{{ student.photo.url }}"
          alt="{{ student.full_name }}"
-         class="rounded-circle"
+         class="rounded-circle photo-thumbnail"
          width="40" height="40">
   {% else %}
     <img src="{% static 'teacher_dashboard\media\student_photos\default.png' %}"
          alt="No photo"
-         class="rounded-circle"
+         class="rounded-circle photo-thumbnail"
          width="40" height="40">
   {% endif %}
         </td>

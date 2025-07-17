@@ -1,4 +1,60 @@
-<!-- students/templates/students/student_form.html -->
+{% extends 'students/base.html' %}
+
+{% block title %}{% if object %}Edit Student{% else %}Add Student{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">{% if object %}Edit Student{% else %}Add Student{% endif %}</h2>
+        <hr>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {# Display any non-field errors (like the one from the old clean() method) at the top #}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Loop through each field in the form #}
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                
+                {{ field }} {# This renders the widget with classes from the form #}
+
+                {# --- THIS IS THE CRITICAL PART --- #}
+                {# Check if this specific field has any errors and display them #}
+                {% if field.errors %}
+                    <div class="mt-2">
+                        {% for error in field.errors %}
+                            <span class="text-danger small">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {# Display help text if it exists #}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Save</button>
+            <a href="{% url 'student-list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% comment %} <!-- students/templates/students/student_form.html -->
 {% extends 'students/base.html' %} {% block title %}{% if object %}Edit
 Student{% else %}Add Student{% endif %}{% endblock %} {% block content %}
 <nav aria-label="breadcrumb">
@@ -18,7 +74,7 @@ Student{% else %}Add Student{% endif %}{% endblock %} {% block content %}
       {% if object %}Edit Student{% else %}Add Student{% endif %}
     </h2>
     <hr />
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
       <!-- Let Django render the form fields -->
@@ -43,4 +99,4 @@ Student{% else %}Add Student{% endif %}{% endblock %} {% block content %}
     </form>
   </div>
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}

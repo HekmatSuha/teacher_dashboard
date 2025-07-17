@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-
 class Group(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Group Name")
 
@@ -24,6 +23,10 @@ class Student(models.Model):
     email = models.EmailField(blank=True, null=True, verbose_name="Email")
     telegram = models.CharField(max_length=100, blank=True, null=True, verbose_name="Telegram")
     note = models.TextField(blank=True, null=True, verbose_name="Note")
+
+    class Meta:
+        unique_together = ('full_name', 'group')
+        ordering = ['full_name']
 
     def __str__(self):
         return self.full_name
