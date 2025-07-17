@@ -99,7 +99,7 @@
                     {# Student view with profile picture #}
                     <span class="navbar-text me-3 d-flex align-items-center">
                         {% if student_photo_url %}
-                            <img src="{{ student_photo_url }}" class="rounded-circle me-2" alt="{{ user.username }}" width="30" height="30" style="object-fit: cover;">
+                            <img src="{{ student_photo_url }}" class="rounded-circle me-2 photo-thumbnail" alt="{{ user.username }}" width="30" height="30" style="object-fit: cover;">
                         {% endif %}
                         {% trans "Welcome" %}, {{ user.username }}
                     </span>
